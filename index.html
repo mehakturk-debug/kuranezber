@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hafızlık Pro v40.0 - Full 114 Sure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --p-green: #065f46; --l-green: #ecfdf5; --gold: #d97706; --bg: #f8fafc; --text: #0f172a; --white: #ffffff; --shadow: 0 4px 25px rgba(0, 0, 0, 0.08); }
+        body.dark-mode { --bg: #020617; --white: #0f172a; --text: #f1f5f9; --l-green: #064e3b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 100px; -webkit-tap-highlight-color: transparent; }
+
+        header { background: linear-gradient(135deg, var(--p-green), #064e3b); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 1000; border-radius: 0 0 25px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .nav-btn { background: var(--white); color: var(--p-green); border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; margin: 5px; font-size: 0.85rem; box-shadow: var(--shadow); }
+        .reset-btn { background: #fee2e2; color: #991b1b; }
+
+        .marquee-box { background: #fffbeb; border-bottom: 1px solid #fde68a; overflow: hidden; white-space: nowrap; padding: 12px 0; }
+        .marquee-content { display: inline-block; animation: marquee 40s linear infinite; font-family: 'Amiri', serif; font-size: 1.3rem; color: var(--p-green); }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        .dashboard-section { max-width: 1400px; margin: 15px auto; padding: 0 15px; }
+        .main-stats { background: var(--white); border-radius: 25px; padding: 20px; box-shadow: var(--shadow); }
+        .bar-bg { width: 100%; background: #f1f5f9; height: 10px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .bar-fill { height: 100%; background: var(--p-green); transition: width 0.8s; width: 0%; }
+        .juz-map { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 15px; }
+
+        .quran-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        @media (max-width: 1200px) { .quran-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 600px) { .quran-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .card { background: var(--white); border-radius: 18px; padding: 15px; box-shadow: var(--shadow); text-align: center; border: 1px solid rgba(0,0,0,0.02); }
+        .card.completed { border: 2px solid #10b981; background: #f0fdf4; }
+        .card-bulk-btn { background: var(--gold); color: white; border: none; border-radius: 8px; padding: 6px; font-size: 0.65rem; font-weight: 700; margin-top: 8px; cursor: pointer; width: 100%; }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+        @media (max-width: 800px) { .calendar-grid { grid-template-columns: repeat(3, 1fr); } }
+        .day-box { background: var(--white); border-radius: 15px; min-height: 80px; padding: 10px; box-shadow: var(--shadow); cursor: pointer; border: 2px solid transparent; position: relative; }
+
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(12px); display: none; z-index: 2000; }
+        .modal-content { background: var(--white); width: 95%; max-width: 750px; height: 85vh; border-radius: 35px; padding: 25px; overflow-y: auto; margin: 20px auto; position: relative; }
+        .arabic { font-family: 'Amiri', serif; font-size: 2.2rem; text-align: right; color: var(--p-green); line-height: 2.2; direction: rtl; }
+        .turkish { font-size: 1rem; color: #475569; margin-bottom: 25px; line-height: 1.6; }
+        .audio-bar { position: sticky; bottom: -25px; background: var(--white); padding: 20px; border-top: 3px solid var(--gold); margin: 20px -25px -25px -25px; z-index: 110; border-radius: 0 0 35px 35px; }
+        
+        .ayah-row.active { background: var(--l-green); border-left: 4px solid var(--p-green); border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="display:flex; justify-content:space-between; align-items:center; max-width:1200px; margin:0 auto;">
+        <div class="xp-badge">✨ <span id="xpDisp">0</span> XP</div>
+        <div>
+            <button class="nav-btn reset-btn" onclick="masterReset()">🗑️ Sıfırla</button>
+            <button class="nav-btn" onclick="document.body.classList.toggle('dark-mode')">🌓</button>
+        </div>
+    </div>
+    <div style="margin-top:15px">
+        <button class="nav-btn" onclick="showView('ana')">📖 114 Sure</button>
+        <button class="nav-btn" onclick="showView('calendar')">📅 Ocak Takvimi</button>
+    </div>
+</header>
+
+<div class="marquee-box">
+    <div class="marquee-content">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ (Sizin en hayırlınız Kur'an'ı öğrenen ve öğreteninizdir) — اِقْرَؤُا الْقُرْآنَ فَإِنَّهُ يَأْتِي يَوْمَ الْقِيَامَةِ شَفِيعًا لِأَصْحَابِهِ — نَوِّرُوا مَنَازِلَكُمْ بِالصَّلاةِ وَقِرَاءَةِ الْقُرْآنِ</div>
+</div>
+
+<div class="dashboard-section" id="statsSection">
+    <div class="main-stats">
+        <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.8rem;">
+            <span>Ezber İlerlemesi</span><span id="genelPerc">%0</span>
+        </div>
+        <div class="bar-bg"><div id="genelBar" class="bar-fill"></div></div>
+        <div class="juz-map" id="juzMap"></div>
+    </div>
+</div>
+
+<div id="calendarView" class="dashboard-section" style="display:none">
+    <h3 style="text-align:center; color:var(--p-green)">Ocak 2026</h3>
+    <div class="calendar-grid" id="calGrid"></div>
+</div>
+
+<div id="anaView">
+    <div id="anaGrid" class="quran-grid"></div>
+</div>
+
+<div class="modal" id="planModal">
+    <div class="modal-content" style="max-width:450px; margin-top:100px; height:auto; min-height:300px;">
+        <h3 id="planDateText" style="margin-top:0; color:var(--p-green)"></h3>
+        <select id="planSurah" onchange="updateAyahLimit()" style="width:100%; padding:10px; margin-bottom:10px;"></select>
+        <div style="display:flex; gap:10px">
+            <input type="number" id="pStart" placeholder="Baş" value="1" style="width:50%; padding:10px;">
+            <input type="number" id="pEnd" placeholder="Bit" style="width:50%; padding:10px;">
+        </div>
+        <button class="nav-btn" style="background:var(--p-green); color:white; width:100%; margin:15px 0" onclick="savePlan()">Ekle</button>
+        <div id="currentTasks"></div>
+        <button class="nav-btn" style="width:100%; margin-top:10px" onclick="closePlan()">Kapat</button>
+    </div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <button class="nav-btn" onclick="closeModal()" style="position:sticky; top:0; float:right; border-radius:50%; width:40px; height:40px;">&times;</button>
+        <h2 id="mTitle" style="text-align:center; color:var(--p-green); margin-bottom:20px;"></h2>
+        <div id="mBody"></div>
+        <div class="audio-bar">
+            <audio id="mainAudio" controls style="width:100%; margin-bottom:15px;"></audio>
+            <div style="display:flex; gap:8px; justify-content:center; align-items:center; flex-wrap:wrap; font-size:0.75rem;">
+                Tekrar: <input type="number" id="loopMax" style="width:40px" value="3">
+                Ayet: <input type="number" id="sRange" style="width:40px" value="1"> - <input type="number" id="eRange" style="width:40px">
+                Hız: <select id="speed" onchange="applySpeed()"><option value="0.25">0.25</option><option value="0.5">0.5</option><option value="1" selected>1</option><option value="1.5">1.5</option><option value="2">2</option></select>
+                <label style="display:flex; align-items:center; gap:4px; cursor:pointer; background:#f1f5f9; padding:4px 8px; border-radius:8px; font-weight:700;">
+                    <input type="checkbox" id="readTurkish"> 🔊 Meal Oku
+                </label>
+                <button onclick="startLoop()" class="nav-btn" style="background:var(--gold); color:white; margin:0">Başlat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const surahData = [
+        {id:1,n:"Fatiha",a:7,j:1},{id:2,n:"Bakara",a:286,j:1},{id:3,n:"Al-i İmran",a:200,j:3},{id:4,n:"Nisa",a:176,j:4},{id:5,n:"Maide",a:120,j:6},{id:6,n:"En'am",a:165,j:7},{id:7,n:"A'raf",a:206,j:8},{id:8,n:"Enfal",a:75,j:9},{id:9,n:"Tevbe",a:129,j:10},{id:10,n:"Yunus",a:109,j:11},{id:11,n:"Hud",a:123,j:11},{id:12,n:"Yusuf",a:111,j:12},{id:13,n:"Ra'd",a:43,j:13},{id:14,n:"İbrahim",a:52,j:13},{id:15,n:"Hicr",a:99,j:14},{id:16,n:"Nahl",a:128,j:14},{id:17,n:"İsra",a:111,j:15},{id:18,n:"Kehf",a:110,j:15},{id:19,n:"Meryem",a:98,j:16},{id:20,n:"Taha",a:135,j:16},{id:21,n:"Enbiya",a:112,j:17},{id:22,n:"Hac",a:78,j:17},{id:23,n:"Mü'minun",a:118,j:18},{id:24,n:"Nur",a:64,j:18},{id:25,n:"Furkan",a:77,j:18},{id:26,n:"Şuara",a:227,j:19},{id:27,n:"Neml",a:93,j:19},{id:28,n:"Kasas",a:88,j:20},{id:29,n:"Ankebut",a:69,j:20},{id:30,n:"Rum",a:60,j:21},{id:31,n:"Lokman",a:34,j:21},{id:32,n:"Secde",a:30,j:21},{id:33,n:"Ahzab",a:73,j:21},{id:34,n:"Sebe",a:54,j:22},{id:35,n:"Fatır",a:45,j:22},{id:36,n:"Yasin",a:83,j:22},{id:37,n:"Saffat",a:182,j:23},{id:38,n:"Sad",a:88,j:23},{id:39,n:"Zümer",a:75,j:23},{id:40,n:"Mü'min",a:85,j:24},{id:41,n:"Fussilet",a:54,j:24},{id:42,n:"Şura",a:53,j:25},{id:43,n:"Zuhruf",a:89,j:25},{id:44,n:"Duhan",a:59,j:25},{id:45,n:"Casiye",a:37,j:25},{id:46,n:"Ahkaf",a:35,j:26},{id:47,n:"Muhammed",a:38,j:26},{id:48,n:"Fetih",a:29,j:26},{id:49,n:"Hucurat",a:18,j:26},{id:50,n:"Kaf",a:45,j:26},{id:51,n:"Zariyat",a:60,j:26},{id:52,n:"Tur",a:49,j:27},{id:53,n:"Necm",a:62,j:27},{id:54,n:"Kamer",a:55,j:27},{id:55,n:"Rahman",a:78,j:27},{id:56,n:"Vakıa",a:96,j:27},{id:57,n:"Hadid",a:29,j:27},{id:58,n:"Mücadele",a:22,j:28},{id:59,n:"Haşr",a:24,j:28},{id:60,n:"Mümtehine",a:13,j:28},{id:61,n:"Saf",a:14,j:28},{id:62,n:"Cuma",a:11,j:28},{id:63,n:"Münafikun",a:11,j:28},{id:64,n:"Tegabun",a:18,j:28},{id:65,n:"Talak",a:12,j:28},{id:66,n:"Tahrim",a:12,j:28},{id:67,n:"Mülk",a:30,j:29},{id:68,n:"Kalem",a:52,j:29},{id:69,n:"Hakka",a:52,j:29},{id:70,n:"Meâric",a:44,j:29},{id:71,n:"Nuh",a:28,j:29},{id:72,n:"Cin",a:28,j:29},{id:73,n:"Müzzemmil",a:20,j:29},{id:74,n:"Müddessir",a:56,j:29},{id:75,n:"Kıyâme",a:40,j:29},{id:76,n:"İnsan",a:31,j:29},{id:77,n:"Mürselât",a:50,j:29},{id:78,n:"Nebe",a:40,j:30},{id:79,n:"Nâziât",a:46,j:30},{id:80,n:"Abese",a:42,j:30},{id:81,n:"Tekvîr",a:29,j:30},{id:82,n:"İnfitâr",a:19,j:30},{id:83,n:"Mutaffifîn",a:36,j:30},{id:84,n:"İnşikâk",a:25,j:30},{id:85,n:"Burûc",a:22,j:30},{id:86,n:"Târık",a:17,j:30},{id:87,n:"A'lâ",a:19,j:30},{id:88,n:"Gâşiye",a:26,j:30},{id:89,n:"Fecr",a:30,j:30},{id:90,n:"Beled",a:20,j:30},{id:91,n:"Şems",a:15,j:30},{id:92,n:"Leyl",a:21,j:30},{id:93,n:"Duhâ",a:11,j:30},{id:94,n:"İnşirâh",a:8,j:30},{id:95,n:"Tîn",a:8,j:30},{id:96,n:"Alak",a:19,j:30},{id:97,n:"Kadir",a:5,j:30},{id:98,n:"Beyyine",a:8,j:30},{id:99,n:"Zilzâl",a:8,j:30},{id:100,n:"Âdiyât",a:11,j:30},{id:101,n:"Kâria",a:11,j:30},{id:102,n:"Tekâsür",a:8,j:30},{id:103,n:"Asr",a:3,j:30},{id:104,n:"Hümeze",a:9,j:30},{id:105,n:"Fîl",a:5,j:30},{id:106,n:"Kureyş",a:4,j:30},{id:107,n:"Mâûn",a:7,j:30},{id:108,n:"Kevser",a:3,j:30},{id:109,n:"Kâfirûn",a:6,j:30},{id:110,n:"Nasr",a:3,j:30},{id:111,n:"Tebbet",a:5,j:30},{id:112,n:"İhlâs",a:4,j:30},{id:113,n:"Felak",a:5,j:30},{id:114,n:"Nâs",a:6,j:30}
+    ];
+
+    const juzAyetCounts = [148, 111, 126, 131, 124, 110, 149, 142, 159, 127, 151, 170, 154, 227, 185, 156, 190, 202, 339, 171, 178, 169, 357, 175, 246, 195, 399, 137, 431, 564];
+    let ezberData = JSON.parse(localStorage.getItem('ezData')) || {};
+    let scheduler = JSON.parse(localStorage.getItem('calSched')) || {};
+    let activeAyahs = [], loopState = { active: false }, activeDay = null;
+
+    function updateStats() {
+        let done = 0; Object.keys(ezberData).forEach(id => done += ezberData[id].length);
+        let perc = ((done / 6236) * 100).toFixed(1);
+        document.getElementById('genelBar').style.width = perc + "%";
+        document.getElementById('genelPerc').innerText = "%" + perc;
+        document.getElementById('xpDisp').innerText = done * 10;
+        
+        const jm = document.getElementById('juzMap'); jm.innerHTML = "";
+        for(let i=1; i<=30; i++) {
+            let jD = 0; 
+            surahData.filter(s => s.j === i).forEach(s => jD += (ezberData[s.id] || []).length);
+            let juzTotal = juzAyetCounts[i-1];
+            let juzPerc = (jD / juzTotal) * 100;
+            
+            jm.innerHTML += `<div style="aspect-ratio:1; background:#f1f5f9; border-radius:50%; position:relative; overflow:hidden; border:1px solid #eee; display:flex; align-items:center; justify-content:center; font-size:0.55rem; font-weight:700;">
+                <div style="position:absolute; bottom:0; width:100%; background:var(--p-green); opacity:0.3; height:${Math.min(100, juzPerc)}%"></div>${i}</div>`;
+        }
+    }
+
+    function renderCards() {
+        const grid = document.getElementById('anaGrid'); grid.innerHTML = "";
+        surahData.forEach(s => {
+            const count = (ezberData[s.id] || []).length;
+            const perc = Math.round((count / s.a) * 100);
+            grid.innerHTML += `<div class="card ${count === s.a ? 'completed' : ''}" onclick="openSurah(${s.id})">
+                <div style="font-size:0.6rem; color:var(--gold)">#${s.id}</div>
+                <div style="font-weight:700; margin:4px 0; font-size:0.85rem">${s.n}</div>
+                <div class="bar-bg" style="height:6px;"><div class="bar-fill" style="width:${perc}%"></div></div>
+                <button class="card-bulk-btn" onclick="bulkEzber(event, ${s.id}, ${s.a})">Hepsini Ezberle</button>
+            </div>`;
+        });
+        updateStats();
+    }
+
+    function renderCalendar() {
+        const grid = document.getElementById('calGrid'); grid.innerHTML = "";
+        for(let i=1; i<=31; i++) {
+            const tasks = scheduler[i] || [];
+            grid.innerHTML += `<div class="day-box" onclick="openPlan(${i})">
+                <span style="font-size:0.7rem; font-weight:800; color:#64748b">${i}</span>
+                ${tasks.map(t => `<div style="background:var(--l-green); font-size:0.5rem; padding:2px; margin-top:2px; border-radius:3px; ${t.done?'text-decoration:line-through':''}"><b>${t.sName}</b></div>`).join('')}
+            </div>`;
+        }
+    }
+
+    function openPlan(day) {
+        activeDay = day; document.getElementById('planModal').style.display = 'block';
+        document.getElementById('planDateText').innerText = `${day} Ocak Planı`;
+        document.getElementById('planSurah').innerHTML = surahData.map(s => `<option value="${s.id}">${s.n}</option>`).join('');
+        updateAyahLimit(); renderCurrentTasks();
+    }
+
+    function savePlan() {
+        const sId = document.getElementById('planSurah').value;
+        if(!scheduler[activeDay]) scheduler[activeDay] = [];
+        scheduler[activeDay].push({ sId: parseInt(sId), sName: surahData.find(x => x.id == sId).n, start: parseInt(document.getElementById('pStart').value), end: parseInt(document.getElementById('pEnd').value), done: false });
+        localStorage.setItem('calSched', JSON.stringify(scheduler));
+        renderCurrentTasks(); renderCalendar();
+    }
+
+    function renderCurrentTasks() {
+        const div = document.getElementById('currentTasks'); const tasks = scheduler[activeDay] || [];
+        div.innerHTML = tasks.map((t, i) => `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#f1f5f9; padding:8px; border-radius:10px; margin-top:5px; font-size:0.75rem">
+                <span style="${t.done?'text-decoration:line-through':''}">${t.sName} (${t.start}-${t.end})</span>
+                <div>
+                    <button onclick="toggleTask(${i})" style="border:none; background:#10b981; color:white; border-radius:5px; padding:3px 6px">✓</button>
+                    <button onclick="removeTask(${i})" style="border:none; background:#ef4444; color:white; border-radius:5px; padding:3px 6px">X</button>
+                </div>
+            </div>`).join('');
+    }
+
+    function toggleTask(i) { 
+        let task = scheduler[activeDay][i];
+        task.done = !task.done; 
+        if(!ezberData[task.sId]) ezberData[task.sId] = [];
+        for(let a = task.start; a <= task.end; a++) {
+            const exists = ezberData[task.sId].indexOf(a);
+            if(task.done) { if(exists === -1) ezberData[task.sId].push(a); } 
+            else { if(exists > -1) ezberData[task.sId].splice(exists, 1); }
+        }
+        localStorage.setItem('calSched', JSON.stringify(scheduler)); 
+        localStorage.setItem('ezData', JSON.stringify(ezberData));
+        renderCurrentTasks(); renderCalendar(); renderCards(); 
+        if(scheduler[activeDay].every(x => x.done)) alert("Tebrikler! Günlük program bitti. 🎉");
+    }
+
+    function removeTask(i) { scheduler[activeDay].splice(i,1); localStorage.setItem('calSched', JSON.stringify(scheduler)); renderCurrentTasks(); renderCalendar(); }
+    function updateAyahLimit() { const sId = document.getElementById('planSurah').value; document.getElementById('pEnd').value = surahData.find(x => x.id == sId).a; }
+    function masterReset() { if(confirm("TÜM VERİLER SİLİNECEK!")) { localStorage.clear(); location.reload(); } }
+
+    async function openSurah(id) {
+        const s = surahData.find(x => x.id === id);
+        document.getElementById('modal').style.display = 'block';
+        document.getElementById('mTitle').innerText = s.n;
+        document.getElementById('eRange').value = s.a;
+        const body = document.getElementById('mBody'); body.innerHTML = "Yükleniyor...";
+        const [ar, tr] = await Promise.all([fetch(`https://api.alquran.cloud/v1/surah/${id}`), fetch(`https://api.alquran.cloud/v1/surah/${id}/tr.diyanet`)]);
+        const arD = await ar.json(), trD = await tr.json();
+        activeAyahs = arD.data.ayahs;
+        body.innerHTML = activeAyahs.map((a, i) => `
+            <div class="ayah-row" id="ayah-${i}" style="border-bottom:1px solid #eee; padding:10px 0;">
+                <button onclick="toggleEz(${id}, ${i+1}, event)" style="float:left; border:none; background:#eee; padding:5px; border-radius:8px;">${(ezberData[id]||[]).includes(i+1)?'✓':'Ezberle'}</button>
+                <div class="arabic">${a.text}</div><div class="turkish" style="font-size:0.9rem">${trD.data.ayahs[i].text}</div>
+            </div>`).join('');
+    }
+
+    function toggleEz(sid, aid, event) {
+        if(!ezberData[sid]) ezberData[sid] = [];
+        const idx = ezberData[sid].indexOf(aid);
+        if(idx > -1) ezberData[sid].splice(idx, 1); else ezberData[sid].push(aid);
+        localStorage.setItem('ezData', JSON.stringify(ezberData));
+        event.target.innerText = (idx > -1) ? "Ezberle" : "✓";
+        updateStats(); renderCards();
+    }
+
+    function bulkEzber(e, id, total) { e.stopPropagation(); ezberData[id] = Array.from({length: total}, (_, i) => i + 1); localStorage.setItem('ezData', JSON.stringify(ezberData)); renderCards(); }
+    
+    // --- SES VE MEAL OKUMA MANTIĞI ---
+    function speakTurkish(text, callback) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'tr-TR';
+        utterance.rate = parseFloat(document.getElementById('speed').value) || 1;
+        utterance.onend = callback;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function startLoop() { 
+        loopState = { 
+            active: true, 
+            start: parseInt(document.getElementById('sRange').value)-1, 
+            end: parseInt(document.getElementById('eRange').value)-1, 
+            count: 1, 
+            max: parseInt(document.getElementById('loopMax').value) 
+        }; 
+        loopState.curr = loopState.start; 
+        play(); 
+    }
+
+    function play() { 
+        if(!loopState.active) return; 
+        window.speechSynthesis.cancel();
+        const audio = document.getElementById('mainAudio'); 
+        const ayah = activeAyahs[loopState.curr]; 
+        const isReadTurkish = document.getElementById('readTurkish').checked;
+
+        document.querySelectorAll('.ayah-row').forEach(r => r.classList.remove('active')); 
+        const el = document.getElementById(`ayah-${loopState.curr}`); 
+        if(el) { 
+            el.classList.add('active'); 
+            el.scrollIntoView({behavior:'smooth', block:'center'}); 
+        } 
+        
+        audio.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`; 
+        audio.playbackRate = document.getElementById('speed').value; 
+        audio.play(); 
+        
+        audio.onended = () => { 
+            if(isReadTurkish && el) {
+                const txt = el.querySelector('.turkish').innerText;
+                speakTurkish(txt, () => nextStep());
+            } else {
+                nextStep();
+            }
+        }; 
+    }
+
+    function nextStep() {
+        if(loopState.curr < loopState.end) { 
+            loopState.curr++; 
+            play(); 
+        } else { 
+            if(loopState.count < loopState.max) { 
+                loopState.count++; 
+                loopState.curr = loopState.start; 
+                play(); 
+            } else { 
+                loopState.active = false; 
+            } 
+        }
+    }
+
+    function showView(v) { document.getElementById('anaView').style.display = v === 'ana' ? 'block' : 'none'; document.getElementById('calendarView').style.display = v === 'calendar' ? 'block' : 'none'; if(v==='calendar') renderCalendar(); }
+    function applySpeed() { document.getElementById('mainAudio').playbackRate = parseFloat(document.getElementById('speed').value); }
+    function closeModal() { document.getElementById('modal').style.display='none'; document.getElementById('mainAudio').pause(); window.speechSynthesis.cancel(); loopState.active = false; }
+    function closePlan() { document.getElementById('planModal').style.display = 'none'; }
+
+    renderCards();
+</script>
+</body>
+</html>
